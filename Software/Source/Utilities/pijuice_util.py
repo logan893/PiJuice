@@ -25,6 +25,8 @@ if __name__ == '__main__':
     g.add_argument('--get-input', action='store_true', help='print the pijuice input status')
     g.add_argument('--dump', action='store_true', help='print settings in JSON format to stdout')
     g.add_argument('--load', action='store_true', help='load settings in JSON format from stdin')
+    g.add_argument('--enable-charging', action='store_true', help='enable charging')
+    g.add_argument('--disable-charging', action='store_true', help='disable charging')
 
     parser.add_argument('--verbose', action='count', help='crank up logging')
 
@@ -213,4 +215,10 @@ if __name__ == '__main__':
         v['gpioPowerStatus'] = s.get('powerInput5vIo', 'GPIO_POWER_STATUS-NOT-IN-STATUS')
         v['usbPowerInput']  = s.get('powerInput', 'POWERINPUT-NOT-IN-STATUS')
         print(v)
+
+    if args.enable_charging:
+        pj.config.SetChargingConfig(True, non_volatile = True)
+
+    if args.disable_charging:
+        pj.config.SetChargingConfig(False, non_volatile = True)
 
