@@ -25,6 +25,7 @@ if __name__ == '__main__':
     g.add_argument('--get-input', action='store_true', help='print the pijuice input status')
     g.add_argument('--dump', action='store_true', help='print settings in JSON format to stdout')
     g.add_argument('--load', action='store_true', help='load settings in JSON format from stdin')
+    g.add_argument('--get-charging-enabled', action='store_true', help='print charging_enabled setting')
     g.add_argument('--enable-charging', action='store_true', help='enable charging')
     g.add_argument('--disable-charging', action='store_true', help='disable charging')
 
@@ -216,6 +217,13 @@ if __name__ == '__main__':
         v['usbPowerInput']  = s.get('powerInput', 'POWERINPUT-NOT-IN-STATUS')
         print(v)
 
+    if args.get_charging_enabled:
+        rv = {}
+        config = pj.config
+        # TODO either clean this up (making it like get_battery), else break it into several actions
+        rv['chargingConfig'] = getDataOrError(config.GetChargingConfig())
+        print(rv['chargingConfig']['charging_enabled'])
+        
     if args.enable_charging:
         pj.config.SetChargingConfig(True, non_volatile = True)
 
